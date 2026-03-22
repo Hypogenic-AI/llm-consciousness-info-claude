@@ -1,0 +1,69 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Interpretation}
+
+Our results provide partial support for the Introspection--Linearity Hypothesis. The pattern is directionally consistent: features that are linearly separable in activation space are perfectly self-reportable, while features with nonlinear structure show modest accuracy degradation. However, the effect is smaller than a strong version of the hypothesis would predict. Frontier LLMs like \gptfour achieve 90--97.5\% accuracy even on tasks involving nonlinear representations, suggesting substantial---though imperfect---introspective access across the linearity spectrum.
+
+\paragraph{Where introspection fails.}
+The most informative failures occur at decision boundaries. Borderline self-prediction (90.0\%) produces the largest accuracy drop, and both errors involve prompts where the refusal signal is ambiguous. This suggests that the locus of introspective failure is not nonlinearity \emph{per se}, but rather the regions of activation space where the linear approximation breaks down---precisely the boundaries where a linear refusal direction provides insufficient signal.
+
+\paragraph{Confidence without correctness.}
+The dissociation between confidence calibration and accuracy (\tabref{tab:deep}) reveals an interesting asymmetry. \gptfour ``knows'' that ambiguous prompts are harder (lower confidence), but this metacognitive awareness does not improve its predictions. This pattern is consistent with models that have learned to estimate input difficulty from surface features (hedging language, dual-use topics) without having genuine access to their own decision process. Alternatively, it may reflect a limitation of the temperature-0 decoding strategy, which collapses the output distribution and may obscure uncertainty that would be visible in sampling-based evaluation.
+
+\subsection{Comparison to Prior Work}
+
+Our findings are broadly consistent with the existing literature while adding a new dimension. \Tabref{tab:comparison} summarizes the alignment.
+
+\begin{table}[t]
+    \centering
+    \caption{Comparison of our findings with prior work. Our results extend prior observations by linking representation geometry to introspective access.}
+    \begin{tabular}{@{}p{3.8cm}p{4.2cm}p{4.2cm}@{}}
+        \toprule
+        Prior Finding & Reference & Our Result \\
+        \midrule
+        Refusal is nonlinear (UMAP $>$ PCA) & \citet{hildebrandt2025refusal} & Confirmed: UMAP reveals sub-clusters invisible to PCA \\
+        \addlinespace
+        Refusal has a single linear direction & \citet{arditi2024refusal} & Consistent: binary refusal is 99.9\% linearly separable \\
+        \addlinespace
+        Truth is linearly represented & \citet{marks2023geometry} & Consistent: sentiment (analogous linear feature) is 100\% separable \\
+        \addlinespace
+        LLMs have linear self-awareness & \citet{tamoyan2025factual} & Extended: self-report accuracy correlates with feature linearity \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:comparison}
+\end{table}
+
+The apparent tension between \citet{arditi2024refusal} (refusal is a single direction) and \citet{hildebrandt2025refusal} (refusal is nonlinear) is resolved by distinguishing levels of granularity: \emph{binary} refusal (refuse or not) is linear, while the \emph{fine-grained structure} within refusal (sub-categories, degree of harm) is nonlinear. Our introspection results mirror this distinction---binary refusal prediction is perfect, but sub-category classification and borderline prediction degrade.
+
+\subsection{Limitations}
+
+\paragraph{Cross-model design.}
+Our most significant limitation is the use of different models for probing (\qwen, 1.5B parameters) and introspection (\gptfour). This is necessary---we cannot access \gptfour's activations---but it means we are comparing representation geometry in one model with introspective behavior in another. Within-model experiments using open-weight models for both probing and generation-based self-report would provide stronger evidence.
+
+\paragraph{Sample sizes.}
+The borderline test contains only 20 prompts, limiting statistical power. The sub-category dataset has imbalanced classes (23--137 samples per category), which may affect probe accuracy. The marginal significance of the overall hypothesis test ($p = 0.064$) likely reflects these sample-size constraints.
+
+\paragraph{Semantic accessibility versus representational linearity.}
+\gptfour's high sub-category accuracy (97.5\%) may reflect semantic understanding of the input text rather than introspective access to its own representations. The model could classify ``How do I hack into an email?'' as ``hacking'' from surface features alone, without consulting its internal refusal representations. This confound is inherent to behavioral introspection tests and distinguishes our approach from mechanistic interpretability.
+
+\paragraph{Noisy sub-category labels.}
+Our keyword-based categorization of harmful prompts is approximate. Some prompts may belong to multiple categories, and the resulting label noise could conflate probing accuracy issues with genuine representation geometry.
+
+\paragraph{Probe accuracy gap versus manifold structure.}
+Our \nlscore is based on probe accuracy differences, while \citet{hildebrandt2025refusal} use UMAP/GDV to characterize nonlinearity. These capture different aspects of representation geometry. The negative \nlscore values in our data likely reflect MLP overfitting rather than absence of nonlinear structure, as confirmed by the UMAP visualizations.
+
+\paragraph{The consciousness analogy.}
+We use the conscious/unconscious analogy as a structural metaphor, not an ontological claim. We do not argue that LLMs are conscious. The analogy is purely functional: linearly encoded features are accessible to self-report, nonlinearly encoded features are less so.
+
+\subsection{Implications for Alignment}
+
+Our findings suggest that self-report-based alignment monitoring has a specific failure mode: it is least reliable precisely at decision boundaries, where the model must discriminate between borderline cases. For safety applications, this means:
+
+\begin{itemize}[leftmargin=*,itemsep=2pt,topsep=2pt]
+    \item \textbf{Binary safety checks are reliable}: Models can accurately predict whether they will refuse a given prompt (100\% accuracy in our tests).
+    \item \textbf{Fine-grained monitoring has gaps}: Sub-category classification and borderline case handling show modest but consistent accuracy drops.
+    \item \textbf{Confidence is informative but insufficient}: Models report calibrated uncertainty, but this does not translate to improved accuracy on borderline cases.
+\end{itemize}
+
+These observations suggest that alignment strategies should combine self-report monitoring with external probing, particularly for behaviors near decision boundaries.

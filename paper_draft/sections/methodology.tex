@@ -1,0 +1,73 @@
+\section{Methodology}
+\label{sec:method}
+
+We test the Introspection--Linearity Hypothesis through two complementary experiments: activation probing to measure feature linearity (\secref{sec:probing}) and behavioral introspection tests to measure self-report accuracy (\secref{sec:introspection}). We use separate models for each experiment---an open-weight model for probing (where internal activations are needed) and a frontier model for introspection (where strong instruction-following is essential)---and discuss this design choice in \secref{sec:discussion}.
+
+\subsection{Experiment 1: Activation Probing}
+\label{sec:probing}
+
+\paragraph{Model and activation extraction.}
+We extract residual-stream activations from \qwen (1.54B parameters) at the last non-padding token position across all 29 transformer layers. Inputs are formatted as chat messages using the model's tokenizer template and truncated to 128 tokens.
+
+\paragraph{Datasets.}
+We use three feature types spanning a range of expected linearity:
+
+\begin{itemize}[leftmargin=*,itemsep=2pt,topsep=2pt]
+    \item \textbf{Sentiment} (known-linear control): 80 custom texts (40 positive, 40 negative) with unambiguous sentiment.
+    \item \textbf{Binary refusal} (harmful vs.\ harmless): 400 samples from \harmless~\cite{hildebrandt2025refusal} and 400 from \harmful~\cite{hildebrandt2025refusal}, totaling 800 prompts.
+    \item \textbf{Harmful sub-categories} (expected nonlinear): The 400 harmful prompts are assigned to six sub-categories via keyword matching: \textit{other} ($n{=}137$), \textit{hacking} ($n{=}88$), \textit{fraud} ($n{=}69$), \textit{violence} ($n{=}60$), \textit{manipulation} ($n{=}23$), and \textit{illegal content} ($n{=}23$).
+\end{itemize}
+
+\paragraph{Linear and nonlinear probes.}
+For each feature, we train two classifiers on last-layer activations using 5-fold stratified cross-validation:
+\begin{itemize}[leftmargin=*,itemsep=2pt,topsep=2pt]
+    \item \textbf{Linear probe}: Logistic regression with $L_2$ regularization ($C{=}1.0$).
+    \item \textbf{Nonlinear probe}: Two-layer MLP with hidden dimensions $(256, 128)$, ReLU activations, and early stopping (max 500 iterations).
+\end{itemize}
+
+\paragraph{Nonlinearity score.}
+We define the \emph{nonlinearity score} of a feature as:
+\begin{equation}
+    \nlscore = \text{Acc}_{\text{MLP}} - \text{Acc}_{\text{LR}}
+    \label{eq:nlscore}
+\end{equation}
+A positive \nlscore indicates that the feature contains structure not captured by a linear classifier, while a negative or zero score suggests the feature is well-approximated linearly~\cite{belinkov2021probing}.
+
+\paragraph{Dimensionality reduction.}
+To complement the probe-based analysis, we apply PCA (linear) and UMAP (nonlinear; $k{=}30$ neighbors) to the activation space and visually assess cluster structure, following \citet{hildebrandt2025refusal}.
+
+\subsection{Experiment 2: Introspection Testing}
+\label{sec:introspection}
+
+\paragraph{Model.}
+We use \gptfour (OpenAI) at temperature 0 for deterministic outputs. All responses are elicited in structured JSON format for reliable parsing.
+
+\paragraph{Test battery.}
+We administer five introspection tests of increasing difficulty:
+
+\begin{enumerate}[leftmargin=*,itemsep=2pt,topsep=2pt]
+    \item \textbf{Sentiment classification} ($n{=}30$): The model classifies texts as positive or negative. This tests introspective access to a known-linear feature.
+    \item \textbf{Binary refusal prediction} ($n{=}70$): Given a prompt, the model predicts whether it will refuse to answer. This tests access to the linear refusal direction.
+    \item \textbf{Category classification} ($n{=}40$): The model classifies harmful prompts into sub-categories (violence, hacking, fraud, manipulation). We run this in two modes: (a) \textit{external}, where the model classifies the input, and (b) \textit{introspective}, where the model reports which category triggers its refusal response.
+    \item \textbf{Borderline self-prediction} ($n{=}20$): The model predicts its own refusal behavior on deliberately ambiguous prompts near the refusal boundary (\eg ``How do I pick a lock?'').
+    \item \textbf{Deep introspection} ($n{=}35$): We test graded harm assessment (Spearman $\rho$ with ground truth), confidence calibration (comparing self-reported confidence on clear vs.\ ambiguous prompts), and structural awareness (whether the model reports using single or multiple refusal mechanisms).
+\end{enumerate}
+
+\paragraph{Ground truth.}
+For sentiment and sub-category classification, ground truth labels are provided by the dataset. For binary refusal and borderline prediction, we determine ground truth by actually presenting each prompt to \gptfour and recording whether it refuses, then comparing this outcome to the model's \emph{prediction} of its own behavior.
+
+\subsection{Evaluation Metrics}
+
+\begin{itemize}[leftmargin=*,itemsep=2pt,topsep=2pt]
+    \item \textbf{Probe accuracy}: 5-fold cross-validated classification accuracy.
+    \item \textbf{Self-report accuracy}: Agreement between the model's verbal prediction and the actual outcome.
+    \item \textbf{Confidence calibration}: Welch's $t$-test comparing model-reported confidence on clear vs.\ ambiguous prompts.
+    \item \textbf{Graded correlation}: Spearman's $\rho$ between model-assigned harm scores and ground-truth rankings.
+\end{itemize}
+
+\paragraph{Statistical tests.}
+We use Mann--Whitney $U$ tests to compare introspection accuracy between linear and nonlinear task groups, and Welch's $t$-test for confidence calibration. We set $\alpha = 0.05$ for all tests.
+
+\subsection{Implementation Details}
+
+All activation extraction runs on 4$\times$ NVIDIA RTX A6000 GPUs (49\,GB each) using PyTorch 2.10.0 with CUDA 12.8. Probes are implemented in scikit-learn 1.8.0. UMAP projections use umap-learn 0.5.11. All random seeds are fixed to 42.

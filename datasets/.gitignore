@@ -1,0 +1,6 @@
+# Downloaded dataset directories (large, regenerable)
+harmless_alpaca/
+harmful_behaviors/
+
+# Hugging Face cache
+.cache/

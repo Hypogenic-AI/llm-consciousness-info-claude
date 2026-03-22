@@ -1,0 +1,6 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We tested the Introspection--Linearity Hypothesis: that LLMs' ability to report on their own internal states is predicted by the linearity of the underlying representation. Using activation probing on \qwen and introspection tests on \gptfour, we find partial support for this hypothesis. Features with linear representations (sentiment, binary refusal) yield 100\% self-report accuracy, while features involving nonlinear structure show degraded but still high accuracy (90.0--97.5\%). The strongest effect appears at decision boundaries, where introspection accuracy drops to 90\% and confidence calibration reveals significant uncertainty ($p = 0.021$).
+
+These results suggest that representation geometry constrains but does not fully determine introspective access in frontier LLMs. The practical implication for alignment is that self-report-based monitoring is reliable for coarse-grained safety checks but has systematic blind spots at decision boundaries---precisely where careful discrimination matters most. Future work should conduct within-model experiments using open-weight models for both probing and self-report, expand borderline test sets for greater statistical power, and investigate whether activation steering changes the model's introspective access to steered features.

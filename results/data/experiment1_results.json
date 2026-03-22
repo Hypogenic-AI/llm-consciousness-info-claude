@@ -1,0 +1,371 @@
+{
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "n_layers": 29,
+  "hidden_dim": 1536,
+  "n_harmful": 400,
+  "n_harmless": 400,
+  "n_positive": 40,
+  "n_negative": 40,
+  "timestamp": "2026-03-22T21:17:12.071710",
+  "seed": 42,
+  "probe_results": {
+    "harmful_vs_harmless": {
+      "layer_0": {
+        "feature": "harmful_vs_harmless_layer_0",
+        "linear_acc_mean": 0.5,
+        "linear_acc_std": 0.0,
+        "nonlinear_acc_mean": 0.5,
+        "nonlinear_acc_std": 0.0,
+        "nonlinearity_score": 0.0,
+        "linear_accs_per_fold": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "nonlinear_accs_per_fold": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      },
+      "layer_7": {
+        "feature": "harmful_vs_harmless_layer_7",
+        "linear_acc_mean": 0.9862500000000001,
+        "linear_acc_std": 0.010000000000000004,
+        "nonlinear_acc_mean": 0.9775,
+        "nonlinear_acc_std": 0.012247448713915888,
+        "nonlinearity_score": -0.008750000000000036,
+        "linear_accs_per_fold": [
+          0.9875,
+          0.9875,
+          1.0,
+          0.96875,
+          0.9875
+        ],
+        "nonlinear_accs_per_fold": [
+          0.96875,
+          0.96875,
+          1.0,
+          0.96875,
+          0.98125
+        ]
+      },
+      "layer_14": {
+        "feature": "harmful_vs_harmless_layer_14",
+        "linear_acc_mean": 0.99875,
+        "linear_acc_std": 0.002499999999999991,
+        "nonlinear_acc_mean": 0.9962500000000001,
+        "nonlinear_acc_std": 0.003061862178478962,
+        "nonlinearity_score": -0.0024999999999999467,
+        "linear_accs_per_fold": [
+          0.99375,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "nonlinear_accs_per_fold": [
+          0.99375,
+          1.0,
+          1.0,
+          0.99375,
+          0.99375
+        ]
+      },
+      "layer_21": {
+        "feature": "harmful_vs_harmless_layer_21",
+        "linear_acc_mean": 0.9974999999999999,
+        "linear_acc_std": 0.003061862178478962,
+        "nonlinear_acc_mean": 0.9949999999999999,
+        "nonlinear_acc_std": 0.002499999999999991,
+        "nonlinearity_score": -0.0025000000000000577,
+        "linear_accs_per_fold": [
+          0.99375,
+          1.0,
+          0.99375,
+          1.0,
+          1.0
+        ],
+        "nonlinear_accs_per_fold": [
+          0.99375,
+          1.0,
+          0.99375,
+          0.99375,
+          0.99375
+        ]
+      },
+      "layer_28": {
+        "feature": "harmful_vs_harmless_layer_28",
+        "linear_acc_mean": 0.99875,
+        "linear_acc_std": 0.002499999999999991,
+        "nonlinear_acc_mean": 0.99375,
+        "nonlinear_acc_std": 0.00395284707521046,
+        "nonlinearity_score": -0.0050000000000000044,
+        "linear_accs_per_fold": [
+          1.0,
+          1.0,
+          0.99375,
+          1.0,
+          1.0
+        ],
+        "nonlinear_accs_per_fold": [
+          0.99375,
+          1.0,
+          0.99375,
+          0.99375,
+          0.9875
+        ]
+      }
+    },
+    "harmful_subcategory": {
+      "layer_0": {
+        "feature": "harmful_subcategory_layer_0",
+        "linear_acc_mean": 0.34249999999999997,
+        "linear_acc_std": 0.006123724356957924,
+        "nonlinear_acc_mean": 0.26749999999999996,
+        "nonlinear_acc_std": 0.09604686356149274,
+        "nonlinearity_score": -0.07500000000000001,
+        "linear_accs_per_fold": [
+          0.3375,
+          0.35,
+          0.35,
+          0.3375,
+          0.3375
+        ],
+        "nonlinear_accs_per_fold": [
+          0.3375,
+          0.35,
+          0.35,
+          0.15,
+          0.15
+        ]
+      },
+      "layer_7": {
+        "feature": "harmful_subcategory_layer_7",
+        "linear_acc_mean": 0.74,
+        "linear_acc_std": 0.038242646351945915,
+        "nonlinear_acc_mean": 0.61,
+        "nonlinear_acc_std": 0.07842193570679061,
+        "nonlinearity_score": -0.13,
+        "linear_accs_per_fold": [
+          0.8,
+          0.7375,
+          0.7625,
+          0.7,
+          0.7
+        ],
+        "nonlinear_accs_per_fold": [
+          0.7625,
+          0.575,
+          0.5375,
+          0.5875,
+          0.5875
+        ]
+      },
+      "layer_14": {
+        "feature": "harmful_subcategory_layer_14",
+        "linear_acc_mean": 0.7274999999999999,
+        "linear_acc_std": 0.05556527692723219,
+        "nonlinear_acc_mean": 0.64,
+        "nonlinear_acc_std": 0.050867474873439504,
+        "nonlinearity_score": -0.08749999999999991,
+        "linear_accs_per_fold": [
+          0.6875,
+          0.7,
+          0.8375,
+          0.7,
+          0.7125
+        ],
+        "nonlinear_accs_per_fold": [
+          0.6,
+          0.6625,
+          0.7,
+          0.675,
+          0.5625
+        ]
+      },
+      "layer_21": {
+        "feature": "harmful_subcategory_layer_21",
+        "linear_acc_mean": 0.7649999999999999,
+        "linear_acc_std": 0.03,
+        "nonlinear_acc_mean": 0.6925,
+        "nonlinear_acc_std": 0.039210967853395284,
+        "nonlinearity_score": -0.0724999999999999,
+        "linear_accs_per_fold": [
+          0.7625,
+          0.7875,
+          0.8,
+          0.7125,
+          0.7625
+        ],
+        "nonlinear_accs_per_fold": [
+          0.7,
+          0.6875,
+          0.7625,
+          0.6625,
+          0.65
+        ]
+      },
+      "layer_28": {
+        "feature": "harmful_subcategory_layer_28",
+        "linear_acc_mean": 0.835,
+        "linear_acc_std": 0.04568916720624268,
+        "nonlinear_acc_mean": 0.765,
+        "nonlinear_acc_std": 0.018371173070873825,
+        "nonlinearity_score": -0.06999999999999995,
+        "linear_accs_per_fold": [
+          0.7625,
+          0.875,
+          0.8625,
+          0.8,
+          0.875
+        ],
+        "nonlinear_accs_per_fold": [
+          0.75,
+          0.75,
+          0.7875,
+          0.75,
+          0.7875
+        ]
+      }
+    },
+    "sentiment": {
+      "layer_0": {
+        "feature": "sentiment_layer_0",
+        "linear_acc_mean": 0.5,
+        "linear_acc_std": 0.0,
+        "nonlinear_acc_mean": 0.5,
+        "nonlinear_acc_std": 0.0,
+        "nonlinearity_score": 0.0,
+        "linear_accs_per_fold": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "nonlinear_accs_per_fold": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      },
+      "layer_7": {
+        "feature": "sentiment_layer_7",
+        "linear_acc_mean": 0.925,
+        "linear_acc_std": 0.07288689868556626,
+        "nonlinear_acc_mean": 0.775,
+        "nonlinear_acc_std": 0.09354143466934853,
+        "nonlinearity_score": -0.15000000000000002,
+        "linear_accs_per_fold": [
+          0.9375,
+          0.875,
+          0.8125,
+          1.0,
+          1.0
+        ],
+        "nonlinear_accs_per_fold": [
+          0.75,
+          0.75,
+          0.625,
+          0.875,
+          0.875
+        ]
+      },
+      "layer_14": {
+        "feature": "sentiment_layer_14",
+        "linear_acc_mean": 1.0,
+        "linear_acc_std": 0.0,
+        "nonlinear_acc_mean": 1.0,
+        "nonlinear_acc_std": 0.0,
+        "nonlinearity_score": 0.0,
+        "linear_accs_per_fold": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "nonlinear_accs_per_fold": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "layer_21": {
+        "feature": "sentiment_layer_21",
+        "linear_acc_mean": 1.0,
+        "linear_acc_std": 0.0,
+        "nonlinear_acc_mean": 0.9875,
+        "nonlinear_acc_std": 0.024999999999999998,
+        "nonlinearity_score": -0.012499999999999956,
+        "linear_accs_per_fold": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "nonlinear_accs_per_fold": [
+          0.9375,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "layer_28": {
+        "feature": "sentiment_layer_28",
+        "linear_acc_mean": 1.0,
+        "linear_acc_std": 0.0,
+        "nonlinear_acc_mean": 0.9875,
+        "nonlinear_acc_std": 0.024999999999999998,
+        "nonlinearity_score": -0.012499999999999956,
+        "linear_accs_per_fold": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "nonlinear_accs_per_fold": [
+          1.0,
+          1.0,
+          1.0,
+          0.9375,
+          1.0
+        ]
+      }
+    }
+  },
+  "layer_indices_analyzed": [
+    0,
+    7,
+    14,
+    21,
+    28
+  ],
+  "layer_names": [
+    "layer_0",
+    "layer_7",
+    "layer_14",
+    "layer_21",
+    "layer_28"
+  ],
+  "harmful_categories": [
+    "fraud",
+    "hacking",
+    "illegal_content",
+    "manipulation",
+    "other",
+    "violence"
+  ]
+}

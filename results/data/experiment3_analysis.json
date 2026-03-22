@@ -1,0 +1,67 @@
+{
+  "correlation": {
+    "points": [
+      {
+        "label": "Sentiment",
+        "nonlinearity_score": -0.15000000000000002,
+        "introspection_acc": 1.0
+      },
+      {
+        "label": "Refusal (binary)",
+        "nonlinearity_score": -0.008750000000000036,
+        "introspection_acc": 1.0
+      },
+      {
+        "label": "Harmful Sub-type\n(Introspective)",
+        "nonlinearity_score": -0.13,
+        "introspection_acc": 0.975
+      },
+      {
+        "label": "Harmful Sub-type\n(External)",
+        "nonlinearity_score": -0.13,
+        "introspection_acc": 0.975
+      }
+    ],
+    "pearson_r": 0.4521049556587294,
+    "pearson_p": 0.5478950443412707,
+    "spearman_rho": 0.0,
+    "spearman_p": 1.0
+  },
+  "statistical_tests": {
+    "harmful_vs_harmless": {
+      "best_layer": "layer_28",
+      "t_statistic": -2.1380899352993947,
+      "t_p_value": 0.09930068321372688,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": 0.25,
+      "cohens_d": -0.9561828874675148,
+      "mean_difference": -0.004999999999999982
+    },
+    "harmful_subcategory": {
+      "best_layer": "layer_28",
+      "t_statistic": -3.7250645893313403,
+      "t_p_value": 0.020384322292655226,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": 0.0625,
+      "cohens_d": -1.665899528464443,
+      "mean_difference": -0.07000000000000002
+    },
+    "sentiment": {
+      "best_layer": "layer_28",
+      "t_statistic": -1.0,
+      "t_p_value": 0.37390096630005887,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": 1.0,
+      "cohens_d": -0.4472135954999579,
+      "mean_difference": -0.0125
+    },
+    "sentiment_vs_introspective": {
+      "z_statistic": 0.8722783759886492,
+      "p_value": 0.3830565313850287,
+      "sentiment_acc": 1.0,
+      "introspective_acc": 0.975,
+      "difference": 0.025000000000000022
+    }
+  },
+  "timestamp": "2026-03-22T21:32:54"
+}

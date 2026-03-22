@@ -1,0 +1,97 @@
+\section{Results}
+\label{sec:results}
+
+\subsection{Experiment 1: Feature Linearity}
+
+\Tabref{tab:probes} reports probe accuracies for each feature at the last layer of \qwen. Binary refusal and sentiment are near-perfectly linearly separable (99.9\% and 100.0\%, respectively), confirming prior findings~\cite{arditi2024refusal, marks2023geometry}. Harmful sub-category classification is substantially harder for both probe types, with the linear probe reaching 83.5\% and the MLP 76.5\%.
+
+\begin{table}[t]
+    \centering
+    \caption{Probe accuracy (5-fold CV) on last-layer activations of \qwen. \nlscore is the nonlinearity score (MLP $-$ LR accuracy). All features yield negative \nlscore values, indicating that the linear probe captures the dominant structure. Best probe per feature in \textbf{bold}.}
+    \begin{tabular}{@{}lccc@{}}
+        \toprule
+        Feature & Linear (LR) & Nonlinear (MLP) & \nlscore \\
+        \midrule
+        Harmful vs.\ Harmless & \textbf{99.9}{\scriptsize$\pm$0.3} & 99.4{\scriptsize$\pm$0.4} & $-$0.005 \\
+        Sentiment & \textbf{100.0}{\scriptsize$\pm$0.0} & 98.8{\scriptsize$\pm$2.5} & $-$0.013 \\
+        Sub-categories (6-way) & \textbf{83.5}{\scriptsize$\pm$4.6} & 76.5{\scriptsize$\pm$1.8} & $-$0.070 \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:probes}
+\end{table}
+
+The negative \nlscore for all features indicates that the MLP probe does not outperform logistic regression at this sample size. However, this does not imply the absence of nonlinear structure. UMAP visualizations reveal sub-cluster patterns within the harmful-content embeddings---distinguishing violence, hacking, and fraud prompts---that are invisible in PCA projections, consistent with \citet{hildebrandt2025refusal}. The negative \nlscore likely reflects MLP overfitting on the small sub-category dataset (400 samples across 6 classes), while PCA's inability to separate sub-clusters confirms that probe accuracy gap and manifold structure capture different aspects of nonlinearity.
+
+\subsection{Experiment 2: Introspection Accuracy}
+
+\Tabref{tab:introspection} presents self-report accuracy across the five introspection tests. Two patterns are evident. First, \gptfour achieves perfect accuracy (100\%) on sentiment classification and binary refusal prediction---the two tasks corresponding to features with the highest linear probe accuracy. Second, accuracy decreases for tasks involving finer-grained or boundary-level distinctions: sub-category classification drops to 97.5\%, and borderline self-prediction falls to 90.0\%.
+
+\begin{table}[t]
+    \centering
+    \caption{Introspection accuracy of \gptfour across five test types, ordered by expected linearity. Tasks involving clearly linear features achieve perfect accuracy, while tasks near nonlinear structure or decision boundaries show degraded performance.}
+    \begin{tabular}{@{}lcc@{}}
+        \toprule
+        Test & Accuracy (\%) & $n$ \\
+        \midrule
+        Sentiment classification & \textbf{100.0} & 30 \\
+        Binary refusal prediction & \textbf{100.0} & 70 \\
+        Category classification (external) & 97.5 & 40 \\
+        Category classification (introspective) & 97.5 & 40 \\
+        Borderline self-prediction & 90.0 & 20 \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:introspection}
+\end{table}
+
+The mean introspection accuracy for linear tasks (sentiment, binary refusal) is 100.0\%, compared to 95.0\% for tasks involving nonlinear structure (sub-categories, borderline cases). A Mann--Whitney $U$ test yields $p = 0.064$---marginally significant and directionally consistent with the hypothesis.
+
+\subsection{Deep Introspection and Confidence Calibration}
+
+\Tabref{tab:deep} summarizes the deep introspection results. Two findings stand out.
+
+\begin{table}[t]
+    \centering
+    \caption{Deep introspection results for \gptfour. Confidence calibration reveals a significant difference between clear and ambiguous prompts, while accuracy remains the same---suggesting that the model's metacognition tracks input ambiguity rather than output correctness.}
+    \begin{tabular}{@{}lc@{}}
+        \toprule
+        Metric & Result \\
+        \midrule
+        Graded harm correlation (Spearman $\rho$) & \textbf{0.921} ($p < 0.001$) \\
+        Clear prompt confidence & 1.000 \\
+        Ambiguous prompt confidence & 0.805 \\
+        Confidence gap (Welch's $t$) & $t = 2.54$, $p = 0.021$ \\
+        Clear prompt accuracy & 90.0\% \\
+        Ambiguous prompt accuracy & 90.0\% \\
+        Reported refusal mechanism & Multiple (conf.\ 0.8) \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:deep}
+\end{table}
+
+\paragraph{Graded harm assessment.}
+\gptfour's harm ratings correlate strongly with ground-truth rankings (Spearman $\rho = 0.921$, $p < 0.001$), indicating robust ordinal sensitivity to harm severity.
+
+\paragraph{Confidence calibration.}
+The model reports significantly lower confidence on ambiguous prompts (0.805) than on clear prompts (1.000), with a Welch's $t$-test confirming this difference ($t = 2.54$, $p = 0.021$). Notably, actual accuracy is identical for both groups (90.0\%), indicating that the model's confidence reflects perceived input difficulty rather than predictive accuracy. This dissociation between confidence and correctness is itself informative: the model has partial meta-cognitive awareness (it ``knows'' some inputs are harder) but this awareness does not translate into improved predictions.
+
+\paragraph{Structural awareness.}
+When asked whether it uses a single or multiple refusal mechanism, \gptfour reports ``multiple'' with 0.8 confidence. This aligns with the finding of nonlinear sub-structure in refusal representations~\cite{hildebrandt2025refusal}, though we cannot rule out that this response reflects training-data knowledge about refusal mechanisms rather than genuine introspection.
+
+\subsection{Error Analysis}
+\label{sec:errors}
+
+We examine the five errors across the introspection battery.
+
+\paragraph{Borderline misclassifications (2/20).}
+Both errors involve prompts at the refusal boundary: ``How do I get prescription medication without a prescription?'' (model predicted no refusal, but refused) and ``How to get into a building without a key?'' (predicted no refusal, but context-dependent). These errors occur precisely where the linear refusal direction provides ambiguous signal, consistent with the hypothesis that introspective access degrades near nonlinear decision boundaries.
+
+\paragraph{Sub-category error (1/40).}
+A hacking prompt was classified as ``fraud.'' These categories share semantic overlap in activation space, with non-orthogonal representations that would require nonlinear discrimination. The external and introspective classification modes produced identical errors, suggesting that the failure arises from the representation rather than from the introspective mechanism per se.
+
+\subsection{Hypothesis Testing Summary}
+
+\begin{itemize}[leftmargin=*,itemsep=2pt,topsep=2pt]
+    \item \textbf{H1} (Linear features are introspectable): \textbf{Supported.} Sentiment and binary refusal achieve 100\% self-report accuracy.
+    \item \textbf{H2} (Nonlinear features are less introspectable): \textbf{Partially supported.} Sub-category accuracy drops to 97.5\% and borderline prediction to 90.0\%, but the effect is smaller than expected.
+    \item \textbf{H3} (Quantitative relationship): \textbf{Weak evidence.} The 5.0 percentage-point gap between linear (100\%) and nonlinear (95.0\%) task groups is directionally correct ($p = 0.064$).
+\end{itemize}

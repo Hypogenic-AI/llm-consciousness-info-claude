@@ -1,0 +1,27 @@
+{
+  "success": true,
+  "stages": {
+    "resource_finder": {
+      "success": true,
+      "completion_marker": "/workspaces/llm-consciousness-info-claude/.resource_finder_complete",
+      "outputs": {
+        "literature_review": "/workspaces/llm-consciousness-info-claude/literature_review.md",
+        "resources_catalog": "/workspaces/llm-consciousness-info-claude/resources.md",
+        "papers_dir": "/workspaces/llm-consciousness-info-claude/papers",
+        "datasets_dir": "/workspaces/llm-consciousness-info-claude/datasets",
+        "code_dir": "/workspaces/llm-consciousness-info-claude/code"
+      },
+      "log_file": "/workspaces/llm-consciousness-info-claude/logs/resource_finder_claude.log",
+      "transcript_file": "/workspaces/llm-consciousness-info-claude/logs/resource_finder_claude_transcript.jsonl",
+      "elapsed_time": 774.9614653587341
+    },
+    "experiment_runner": {
+      "success": true,
+      "return_code": 0,
+      "elapsed_time": 1764.023936510086,
+      "log_file": "/workspaces/llm-consciousness-info-claude/logs/execution_claude.log",
+      "transcript_file": "/workspaces/llm-consciousness-info-claude/logs/execution_claude_transcript.jsonl"
+    }
+  },
+  "work_dir": "/workspaces/llm-consciousness-info-claude"
+}
